@@ -22,13 +22,20 @@ import { ref } from 'vue';
 const qrCodes = ref([]);
 
 const onDetect = (detectedCodes) => {
-  qrCodes.value.push(...detectedCodes);
+  detectedCodes.forEach(code => {
+    qrCodes.value.push(code.rawValue);
+    console.log(code.rawValue)
+  });
 };
 </script>
 
 <style>
 li{
   color: aliceblue;
-  
+}
+
+.fixed-camera {
+  width: 100vw; /* Ocupa el 100% del ancho de la pantalla */
+  height: 50vh; /* Ocupa el 50% de la altura de la pantalla */
 }
 </style>
