@@ -1,7 +1,15 @@
 <template>
   <ion-page>
     <div>
-      <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
+      <qrcode-stream @detect="onDetect"></qrcode-stream>
+      <div>
+        <h2>Códigos QR detectados:</h2>
+        <ul>
+          <li v-for="(code, index) in qrCodes" :key="index">
+            {{ code }}
+          </li>
+        </ul>
+      </div>
     </div>
   </ion-page>
 </template>
@@ -9,21 +17,18 @@
 <script setup>
 import { IonPage } from '@ionic/vue';
 import { QrcodeStream } from 'vue-qrcode-reader';
+import { ref } from 'vue';
 
-const onDecode = (result) => {
-  console.log('QR code result:', result);
-};
+const qrCodes = ref([]);
 
-const onInit = (promise) => {
-  promise.then(() => {
-    console.log('Camera is ready');
-  })
-  .catch((error) => {
-    console.error('Could not initialize camera', error);
-  });
+const onDetect = (detectedCodes) => {
+  qrCodes.value.push(...detectedCodes);
 };
 </script>
 
 <style>
-/* Aquí puedes añadir tus estilos */
+li{
+  color: aliceblue;
+  
+}
 </style>
