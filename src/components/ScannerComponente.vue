@@ -1,21 +1,36 @@
 <template>
     <ion-page>
-      <div>
-        <qrcode-stream @detect="onDetect"></qrcode-stream>
-        <div>
-          <h2>Códigos QR detectados:</h2>
-          <ul>
-            <li v-for="(code, index) in qrCodes" :key="index">
-              {{ code }}
-            </li>
-          </ul>
+      <ion-header>
+      </ion-header>
+      <ion-content>
+        <div class="container-camara">
+          <qrcode-stream @detect="onDetect"></qrcode-stream>
         </div>
-      </div>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Códigos QR detectados:</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ul>
+              <li v-for="(code, index) in qrCodes" :key="index">
+                {{ code }}
+              </li>
+            </ul>
+          </ion-card-content>
+        </ion-card>
+
+        <router-link to="/home">
+            <ion-button>Inicio</ion-button>
+        </router-link>
+        
+
+      </ion-content>
     </ion-page>
   </template>
   
   <script setup>
-  import { IonPage } from '@ionic/vue';
+  import { IonPage, IonHeader, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/vue';
+  import {RouterLink} from 'vue-router'
   import { QrcodeStream } from 'vue-qrcode-reader';
   import {ref} from 'vue';
   
@@ -34,9 +49,16 @@
     color: aliceblue;
   }
   
-  .fixed-camera {
-    width: 100vw; /* Ocupa el 100% del ancho de la pantalla */
-    height: 50vh; /* Ocupa el 50% de la altura de la pantalla */
+  .container-camara {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    margin: 0 auto;
+    padding-top: 20px;
   }
   </style>
   
