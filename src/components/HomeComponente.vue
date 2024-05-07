@@ -2,7 +2,7 @@
   <ion-page>
     <ion-card>
       <ion-card-header>
-        Deseas scannear codigos QR??
+        Bienvenido 
       </ion-card-header>
 
       <ion-card-content>
@@ -29,7 +29,11 @@ export default {
   methods: {
     RedirecScannerQR() {
       this.$router.push('/scanner');
-    }
+    },
+
+    
+
+
   }
 }
 </script>
