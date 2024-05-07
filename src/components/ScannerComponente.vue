@@ -59,6 +59,9 @@ const dialogOpen = ref(false);
 const selectedArray = ref('array1');
 let x=0;
 
+const Userlogin = localStorage.getItem('User-login');
+const UserLoginData = JSON.parse(Userlogin);
+
 const onDetect = (detectedCodes) => {
   detectedCodes.forEach(code => {
     qrCodes.value[selectedArray.value].push(code.rawValue);
@@ -83,23 +86,66 @@ const vaciarArreglos = () => {
   qrCodes.value.array1 = [];
   qrCodes.value.array2 = [];
 };
-let validacion;
+let vali;
 
 const peticiones = () => {
   for ( let i=0; i <qrCodes.value.array1.length; i++) {
     const elemento = qrCodes.value.array1[x];
     const elemento2 = qrCodes.value.array2[x];
     if(elemento==elemento2){
-      validacion="correcta";
+      vali="correcta";
     }else{
-      validacion="incorrecta";
+      vali="incorrecta";
     }
     console.log(x);
     if(qrCodes.value.array1[x]!=null && qrCodes.value.array2[x]!=null  ){
       console.log("hora de hacer fetch");
-      console.log(validacion);
+      console.log(vali);
       x=x+1;
       
+      try {
+        const fecha1 = new Date().toISOString(); // Obtener la fecha actual en formato ISO
+        const id_usuario = UserLoginData.id_usuario;
+
+        console.log(elemento);
+        console.log(elemento2);
+        console.log(vali);
+        console.log(fecha1);
+        console.log(id_usuario);
+
+        fetch('https://localhost:7199/api/Scanner_Datos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+            
+          },
+          body: JSON.stringify({
+            pro_aditivo: elemento,
+            contenedor: elemento2,
+            validacion: vali,
+            fecha: fecha1,
+            id_user: id_usuario
+          })
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error en la solicitud'); // Manejo de errores si la solicitud falla
+            }
+            return response.json(); // Parsea la respuesta como JSON
+          })
+          .then(data => {
+            console.log('Respuesta del servidor:', data); // Hace algo con la respuesta exitosa
+          })
+          .catch(error => {
+            console.error('Error en la solicitud:', error); // Maneja errores de red o de otro tipo
+          });
+      } catch (error) {
+        console.error('Error en el fetch:', error); // Maneja errores generados al hacer el fetch
+
+        
+
+      }
+
     }
   }
 };
